@@ -110,7 +110,7 @@ exports.verifyEmailOtp = async (req, res) => {
     const token = generateToken({ id: user.id, name: user.name, email: user.email });
 
     return res.status(200).json({
-      message: 'Email verified successfully. Welcome to SecureApp!',
+      message: 'Email verified successfully. Welcome to SmartEco!',
       token,
       user: {
         id: user.id,

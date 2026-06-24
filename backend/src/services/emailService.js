@@ -34,7 +34,7 @@ const getEmailWrapper = (title, bodyContent) => `
       border: 1px solid #e2e8f0;
     }
     .header {
-      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       padding: 32px;
       text-align: center;
     }
@@ -54,7 +54,7 @@ const getEmailWrapper = (title, bodyContent) => `
       margin: 32px 0;
     }
     .btn-primary {
-      background-color: #4f46e5;
+      background-color: #059669;
       color: #ffffff !important;
       text-decoration: none;
       padding: 12px 28px;
@@ -62,10 +62,10 @@ const getEmailWrapper = (title, bodyContent) => `
       font-weight: 600;
       font-size: 16px;
       display: inline-block;
-      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -1px rgba(79, 70, 229, 0.10);
+      box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2), 0 2px 4px -1px rgba(16, 185, 129, 0.10);
     }
     .btn-primary:hover {
-      background-color: #4338ca;
+      background-color: #047857;
     }
     .footer {
       background-color: #f1f5f9;
@@ -76,16 +76,16 @@ const getEmailWrapper = (title, bodyContent) => `
       border-top: 1px solid #e2e8f0;
     }
     .footer a {
-      color: #4f46e5;
+      color: #059669;
       text-decoration: none;
     }
     .otp-code {
       font-size: 32px;
       font-weight: 800;
-      color: #4f46e5;
+      color: #059669;
       letter-spacing: 6px;
       background-color: #f0fdf4;
-      border: 1px dashed #86efac;
+      border: 1px dashed #6ee7b7;
       padding: 16px;
       border-radius: 8px;
       text-align: center;
@@ -130,7 +130,7 @@ const getEmailWrapper = (title, bodyContent) => `
       </div>
       <div class="footer">
         <p>This email was automatically sent. Please do not reply directly to this message.</p>
-        <p>&copy; ${new Date().getFullYear()} SecureApp Corp. All rights reserved.</p>
+        <p>&copy; ${new Date().getFullYear()} SmartEco. All rights reserved.</p>
       </div>
     </div>
   </div>
@@ -144,7 +144,7 @@ const getEmailWrapper = (title, bodyContent) => `
 async function sendMail({ to, subject, html, text }) {
   try {
     const transporter = await getTransporter();
-    const from = process.env.EMAIL_FROM || '"SecureApp Support" <no-reply@example.com>';
+    const from = process.env.EMAIL_FROM || '"SmartEco Support" <no-reply@example.com>';
 
     const info = await transporter.sendMail({
       from,
@@ -173,12 +173,12 @@ async function sendMail({ to, subject, html, text }) {
  * 1. Welcome Email
  */
 async function sendWelcomeEmail(to, name) {
-  const title = 'Welcome to SecureApp!';
+  const title = 'Welcome to SmartEco!';
   const html = getEmailWrapper(
     title,
     `
     <p>Hi <strong>${name}</strong>,</p>
-    <p>Thanks for signing up for SecureApp! We are absolutely thrilled to have you join our platform.</p>
+    <p>Thanks for signing up for SmartEco! We are absolutely thrilled to have you join our platform.</p>
     <p>Our secure, cloud-enabled environment ensures that your records are kept private, and your actions are verified using the latest cryptography.</p>
     <p>Here is what you can do next:</p>
     <ul>
@@ -190,10 +190,10 @@ async function sendWelcomeEmail(to, name) {
       <a href="${process.env.CLIENT_URL}/" class="btn-primary">Go to Dashboard</a>
     </div>
     <p>If you have any questions, feel free to contact our support team at any time.</p>
-    <p>Best regards,<br>The Chinnu App Team</p>
+    <p>Best regards,<br>SmartEco Development Team</p>
     `
   );
-  const text = `Welcome to SecureApp, ${name}!\n\nThanks for signing up. Please visit ${process.env.CLIENT_URL} to get started.`;
+  const text = `Welcome to SmartEco, ${name}!\n\nThanks for signing up. Please visit ${process.env.CLIENT_URL} to get started.`;
   return sendMail({ to, subject: title, html, text });
 }
 
@@ -201,9 +201,21 @@ async function sendWelcomeEmail(to, name) {
  * 2. Email Verification OTP
  */
 async function sendVerificationOtpEmail(to, name, otp) {
-  const title = 'Your OTP Code';
-  const text = `Your OTP is ${otp}`;
-  const html = `<p style="font-family: sans-serif; font-size: 16px; color: #333;">Your OTP is <strong>${otp}</strong></p>`;
+  const title = 'Welcome to SmartEco 🚀';
+  const text = `Welcome to SmartEco 🚀\n\nHello,\n\nThank you for registering with SmartEco.\n\nTo complete your registration, please verify your email address using the OTP below:\n\n🔐 Email Verification OTP\n\n${otp}\n\nThis OTP is valid for 5 minutes.\n\nIf you did not request this registration, please ignore this email.\n\nRegards,\n\nSmartEco Development Team`;
+  const html = getEmailWrapper(
+    title,
+    `
+    <p>Hello,</p>
+    <p>Thank you for registering with SmartEco.</p>
+    <p>To complete your registration, please verify your email address using the OTP below:</p>
+    <p style="font-size: 16px; font-weight: bold; margin-top: 24px; text-align: center; color: #334155;">🔐 Email Verification OTP</p>
+    <div class="otp-code">${otp}</div>
+    <p style="text-align: center; color: #64748b; font-size: 14px; margin-top: 16px;">This OTP is valid for 5 minutes.</p>
+    <p style="color: #64748b; font-size: 14px; margin-top: 24px;">If you did not request this registration, please ignore this email.</p>
+    <p style="margin-top: 32px; line-height: 1.5;">Regards,<br><br>SmartEco Development Team</p>
+    `
+  );
   return sendMail({ to, subject: title, html, text });
 }
 
@@ -211,9 +223,21 @@ async function sendVerificationOtpEmail(to, name, otp) {
  * 3. Login OTP Verification
  */
 async function sendLoginOtpEmail(to, name, otp) {
-  const title = 'Your Login OTP';
-  const text = `Your OTP is ${otp}`;
-  const html = `<p style="font-family: sans-serif; font-size: 16px; color: #333;">Your OTP is <strong>${otp}</strong></p>`;
+  const title = 'Welcome to SmartEco 🚀';
+  const text = `Welcome to SmartEco 🚀\n\nHello,\n\nThank you for registering with SmartEco.\n\nTo complete your registration, please verify your email address using the OTP below:\n\n🔐 Email Verification OTP\n\n${otp}\n\nThis OTP is valid for 5 minutes.\n\nIf you did not request this registration, please ignore this email.\n\nRegards,\n\nSmartEco Development Team`;
+  const html = getEmailWrapper(
+    title,
+    `
+    <p>Hello,</p>
+    <p>Thank you for registering with SmartEco.</p>
+    <p>To complete your registration, please verify your email address using the OTP below:</p>
+    <p style="font-size: 16px; font-weight: bold; margin-top: 24px; text-align: center; color: #334155;">🔐 Email Verification OTP</p>
+    <div class="otp-code">${otp}</div>
+    <p style="text-align: center; color: #64748b; font-size: 14px; margin-top: 16px;">This OTP is valid for 5 minutes.</p>
+    <p style="color: #64748b; font-size: 14px; margin-top: 24px;">If you did not request this registration, please ignore this email.</p>
+    <p style="margin-top: 32px; line-height: 1.5;">Regards,<br><br>SmartEco Development Team</p>
+    `
+  );
   return sendMail({ to, subject: title, html, text });
 }
 
@@ -236,7 +260,7 @@ async function sendForgotPasswordEmail(to, name, resetToken) {
     </div>
     <p>If you cannot click the button above, copy and paste this link into your browser:</p>
     <p><a href="${resetLink}">${resetLink}</a></p>
-    <p>Thanks,<br>The Chinnu App Team</p>
+    <p>Thanks,<br>SmartEco Development Team</p>
     `
   );
   const text = `Reset Password: Click this link to reset your password: ${resetLink}. Valid for 15 minutes.`;
@@ -361,7 +385,7 @@ async function sendActionConfirmationEmail(to, name, actionName, actionDetails =
       <a href="${process.env.CLIENT_URL}/" class="btn-primary">View Account Activity</a>
     </div>
     <p>Thank you for using our secure platform!</p>
-    <p>Warmly,<br>The Chinnu App Team</p>
+    <p>Warmly,<br>SmartEco Development Team</p>
     `
   );
 
