@@ -15,7 +15,7 @@ export default function Dashboard() {
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    
+
     if (!savedUser || !token) {
       navigate('/login');
     } else {
@@ -26,8 +26,8 @@ export default function Dashboard() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+
     navigate('/login');
-    window.location.reload();
   };
 
   // Mock data templates based on selector selection
@@ -77,7 +77,7 @@ export default function Dashboard() {
     try {
       const details = getActionDetails();
       const response = await actionAPI.sendActionConfirmation(actionName, details);
-      
+
       setAlert({
         message: `${response.data.message} Check the backend terminal for the Ethereal preview link!`,
         type: 'success'
@@ -100,7 +100,7 @@ export default function Dashboard() {
       <div className="dashboard-card">
         <h2 className="dashboard-title">Secure Portal Dashboard</h2>
         <Alert message={alert.message} type={alert.type} />
-        
+
         <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', fontSize: '15px' }}>
           Welcome back! You are logged in using a secure JSON Web Token. You can test active email integrations below.
         </p>
@@ -126,9 +126,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <button 
-          onClick={handleLogout} 
-          className="btn-submit" 
+        <button
+          onClick={handleLogout}
+          className="btn-submit"
           style={{ background: 'linear-gradient(135deg, #374151 0%, #1f2937 100%)', marginTop: '30px' }}
         >
           Sign Out of Account
@@ -157,9 +157,9 @@ export default function Dashboard() {
           </select>
         </div>
 
-        <button 
-          onClick={handleTriggerEmail} 
-          className="btn-submit" 
+        <button
+          onClick={handleTriggerEmail}
+          className="btn-submit"
           disabled={loading}
           style={{ marginTop: '10px' }}
         >
