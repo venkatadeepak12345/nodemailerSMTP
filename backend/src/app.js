@@ -22,11 +22,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Standard healthcheck route
-app.get('/health', (req, res) => {
+// app.get('/health', (req, res) => {
+//   res.status(200).json({
+//     status: 'online',
+//     timestamp: new Date().toISOString(),
+//     message: 'Email Service API is fully operational'
+//   });
+// });
+app.get('/', (req, res) => {
   res.status(200).json({
-    status: 'online',
-    timestamp: new Date().toISOString(),
-    message: 'Email Service API is fully operational'
+    status: 'success',
+    message: 'Secure Email Service API is running'
   });
 });
 
@@ -43,10 +49,10 @@ app.use((req, res, next) => {
 // Global Error Handler Middleware
 app.use((err, req, res, next) => {
   console.error('🔥 Global Error Handler caught an unhandled exception:', err);
-  
+
   const statusCode = err.statusCode || 500;
   const message = err.message || 'A critical internal server error occurred on the API.';
-  
+
   res.status(statusCode).json({
     error: message,
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
