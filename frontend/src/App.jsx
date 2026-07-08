@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import VerifyOtp from './pages/VerifyOtp';
@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   // Check authentication session on mount
   useEffect(() => {
@@ -27,12 +28,12 @@ export default function App() {
     localStorage.removeItem('user');
     setIsAuthenticated(false);
     setUser(null);
-    window.location.href = '/login';
+    navigate('/login');
+    window.location.reload();
   };
 
   return (
-    <Router>
-      <div className="app-container">
+    <div className="app-container">
         {/* Navigation Bar */}
         <nav className="navbar">
           <Link to="/" className="navbar-brand">
@@ -88,6 +89,5 @@ export default function App() {
           </Routes>
         </main>
       </div>
-    </Router>
   );
 }
