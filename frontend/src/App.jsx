@@ -26,68 +26,69 @@ export default function App() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+
     setIsAuthenticated(false);
     setUser(null);
+
     navigate('/login');
-    window.location.reload();
   };
 
   return (
     <div className="app-container">
-        {/* Navigation Bar */}
-        <nav className="navbar">
-          <Link to="/" className="navbar-brand">
-            🔐 SecureMail
+      {/* Navigation Bar */}
+      <nav className="navbar">
+        <Link to="/" className="navbar-brand">
+          🔐 SecureMail
+        </Link>
+        <div className="navbar-links">
+          <Link to="/contact-us" className="nav-link">
+            Contact Us
           </Link>
-          <div className="navbar-links">
-            <Link to="/contact-us" className="nav-link">
-              Contact Us
-            </Link>
-            {isAuthenticated ? (
-              <>
-                <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                  Hi, <strong>{user?.name}</strong>
-                </span>
-                <button onClick={handleLogout} className="nav-btn">
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="nav-link">
-                  Sign In
-                </Link>
-                <Link to="/register" className="nav-link">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-        </nav>
+          {isAuthenticated ? (
+            <>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                Hi, <strong>{user?.name}</strong>
+              </span>
+              <button onClick={handleLogout} className="nav-btn">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="nav-link">
+                Sign In
+              </Link>
+              <Link to="/register" className="nav-link">
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
+      </nav>
 
-        {/* Page Content Router */}
-        <main className="main-content">
-          <Routes>
-            {/* Protected Route */}
-            <Route 
-              path="/" 
-              element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />} 
-            />
+      {/* Page Content Router */}
+      <main className="main-content">
+        <Routes>
+          {/* Protected Route */}
+          <Route
+            path="/"
+            element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />}
+          />
 
-            {/* Auth Routes */}
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/verify-otp" element={<VerifyOtp />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+          {/* Auth Routes */}
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/verify-otp" element={<VerifyOtp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
-            {/* Public Contact Route */}
-            <Route path="/contact-us" element={<ContactUs />} />
+          {/* Public Contact Route */}
+          <Route path="/contact-us" element={<ContactUs />} />
 
-            {/* Fallback Redirect */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </main>
-      </div>
+          {/* Fallback Redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+    </div>
   );
 }

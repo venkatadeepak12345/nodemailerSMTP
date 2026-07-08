@@ -107,7 +107,7 @@ export default function VerifyOtp() {
       }
 
       setAlert({ message: response.data.message, type: 'success' });
-      
+
       // Store token and redirect to dashboard
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -115,7 +115,6 @@ export default function VerifyOtp() {
       setTimeout(() => {
         // Trigger dashboard navigation and page reload to sync global auth states
         navigate('/');
-        window.location.reload();
       }, 1200);
     } catch (error) {
       const errMsg = error.response?.data?.error || 'Verification failed. Please verify the code.';
@@ -169,10 +168,10 @@ export default function VerifyOtp() {
   return (
     <div className="card-auth">
       <Loader active={loading || resending} />
-      
+
       <h2 className="card-title">Security Verification</h2>
       <p className="card-subtitle">
-        {purpose === 'email_verification' 
+        {purpose === 'email_verification'
           ? `We sent a 6-digit confirmation code to sign up your account at ${email}.`
           : `Please authenticate your login request using the code sent to ${email}.`
         }
@@ -198,7 +197,7 @@ export default function VerifyOtp() {
       <form onSubmit={handleVerify}>
         <div className="form-group text-center">
           <label className="form-label">Enter Verification Code</label>
-          
+
           <div className="otp-container" onPaste={handlePaste}>
             {otp.map((data, index) => (
               <input
@@ -224,9 +223,9 @@ export default function VerifyOtp() {
           )}
         </div>
 
-        <button 
-          className="btn-submit" 
-          type="submit" 
+        <button
+          className="btn-submit"
+          type="submit"
           disabled={loading || timeLeft <= 0 || !email}
         >
           Verify & Authenticate
@@ -235,9 +234,9 @@ export default function VerifyOtp() {
 
       <div className="text-center mt-6" style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
         {purpose === 'email_verification' ? (
-          <button 
-            onClick={handleResend} 
-            className="link-auth" 
+          <button
+            onClick={handleResend}
+            className="link-auth"
             style={{ background: 'none', border: 'none', font: 'inherit', cursor: 'pointer' }}
             disabled={resending || timeLeft > 240} // Prevent spamming within 1 minute of send
           >

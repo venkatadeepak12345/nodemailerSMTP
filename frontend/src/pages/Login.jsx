@@ -21,7 +21,7 @@ export default function Login() {
 
     try {
       const response = await authAPI.login(formData.email, formData.password);
-      
+
       if (response.data.requiresOtp) {
         // Multi-Factor Login OTP path
         setAlert({ message: response.data.message, type: 'success' });
@@ -35,7 +35,6 @@ export default function Login() {
         setAlert({ message: 'Login successful!', type: 'success' });
         setTimeout(() => {
           navigate('/');
-          window.location.reload();
         }, 1000);
       }
     } catch (error) {
