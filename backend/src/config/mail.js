@@ -27,6 +27,9 @@ async function getTransporter() {
         user: user,
         pass: pass,
       },
+      connectionTimeout: 5000, // 5 seconds connection timeout
+      greetingTimeout: 5000,   // 5 seconds greeting timeout
+      socketTimeout: 5000,     // 5 seconds socket timeout
     });
   } else {
     console.log('⚠️ SMTP credentials not fully configured in .env. Creating auto-generated Ethereal Mail test account...');
