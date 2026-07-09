@@ -17,6 +17,9 @@ async function migrate() {
         host: process.env.DB_HOST || 'localhost',
         port: parseInt(process.env.DB_PORT || '5432', 10),
         database: process.env.DB_DATABASE || 'email_service',
+        ssl: (process.env.RENDER || process.env.NODE_ENV === 'production')
+          ? { rejectUnauthorized: false }
+          : false
       });
 
   try {
