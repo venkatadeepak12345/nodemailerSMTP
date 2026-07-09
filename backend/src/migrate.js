@@ -4,13 +4,20 @@ const path = require('path');
 require('dotenv').config();
 
 async function migrate() {
-  const client = new Client({
-    user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '5432', 10),
-    database: process.env.DB_DATABASE || 'email_service',
-  });
+  const client = process.env.DATABASE_URL
+    ? new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+          rejectUnauthorized: false
+        }
+      })
+    : new Client({
+        user: process.env.DB_USER || 'postgres',
+        password: process.env.DB_PASSWORD,
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT || '5432', 10),
+        database: process.env.DB_DATABASE || 'email_service',
+      });
 
   try {
     await client.connect();
