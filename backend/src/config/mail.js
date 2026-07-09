@@ -12,17 +12,25 @@ async function getTransporter() {
 
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
-  const host = process.env.SMTP_HOST;
-  const port = process.env.SMTP_PORT;
+  let host = process.env.SMTP_HOST;
+  let port = process.env.SMTP_PORT;
+  let secure = process.env.SMTP_SECURE === 'true';
+
+  // Automatically force port 465 (SSL) on Render/production to bypass port 587 block
+  if ((process.env.RENDER || process.env.DATABASE_URL) && host === 'smtp.gmail.com' && port === '587') {
+    console.log('🔄 Production environment detected: Automatically switching Gmail SMTP port from 587 to 465 (SSL) to bypass Render firewall blocks.');
+    port = '465';
+    secure = true;
+  }
 
   const hasCredentials = user && pass && host && port;
 
   if (hasCredentials) {
-    console.log('📬 Initializing SMTP Transporter using .env credentials...');
+    console.log(`📬 Initializing SMTP Transporter using credentials (Host: ${host}, Port: ${port}, Secure: ${secure})...`);
     transporter = nodemailer.createTransport({
       host: host,
       port: parseInt(port, 10),
-      secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
+      secure: secure,
       auth: {
         user: user,
         pass: pass,
