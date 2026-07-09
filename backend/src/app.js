@@ -9,9 +9,24 @@ const actionRoutes = require('./routes/actionRoutes');
 const app = express();
 
 // Configure CORS to accept requests from our Vite client url
-const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+const clientUrl = process.env.CLIENT_URL;
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://venkatadeepak12345.github.io'
+];
+if (clientUrl) {
+  allowedOrigins.push(clientUrl);
+}
+
 app.use(cors({
-  origin: clientUrl,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, postman) or matching origins
+    if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://localhost:')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
